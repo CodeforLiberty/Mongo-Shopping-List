@@ -40,16 +40,25 @@ app.delete('/items/:id', function (req, res) {
         message: 'Not Found'
       });
     }
-    console.log(item);
     res.status(200).json(item);
   });
 })
 
-// app.put('/items', function (req, res) {
-//   var update = {$set: {name: name}}
-//   Item.findOneAndUpdate({name: req.name}, )
-//
-// });
+app.put('/items/:id', function (req, res) {
+  var query = { _id: req.params.id };
+  var update = {$set: {name: req.body.name}}
+  Item.findOneAndUpdate(query, update, function (err, item) {
+    if (err) {
+      return res.status(404).json({
+        message: 'Not Found'
+      });
+    }
+    res.status(200).json(item);
+  });
+
+  console.log(req.body);
+  console.log(req.params);
+});
 
 app.use('*', function(req, res) {
   res.status(404).json({
